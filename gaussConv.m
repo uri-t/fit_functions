@@ -20,46 +20,22 @@ w = ceil(sqrt(length(x)));
 h = floor(sqrt(length(x)));
 
 % interpolate and pad to deal with numerical issues
-x_int = [min(x): min(diff(x)): max(x)];
-y_int = spline(x,y,x_int);
+x = [x(1)-4*sig x x(end)+4*sig];
+y = [y(1) y y(end)];
 
-figure()
+sp = min([min(diff(x)), sig/2]);
+x_int = [min(x):sp: max(x)];
+y_int = interp1(x,y,x_int);
+
+%figure()
 for i = [1:length(x)]
     mu = x(i);
-    g = normpdf(x, mu, sig);
-    
-    % in order to get correct values at the ends, we pad the vector by
-    % repeating the first or last value until the gaussian we're
-    % multiplying by has values greater than the cut_off
-    
-    y_pad = y;
-    x_pad = x;
-    
-    cut_off = 0.01;
-    
-    % pad beginning 
-    while g(1) > cut_off
-        spacing = min([x_pad(2)-x_pad(1) sig]);
-        x_add = [x_pad(1)-sig:spacing:x_pad(1)-spacing];
-        x_pad = [x_add x_pad];
-        g = [normpdf(x_add, mu, sig) g];
-        y_pad = [y_pad(1)*ones(1,length(x_add)) y_pad];
-    end
-    
-    % pad end
-    while g(end) > cut_off
-        spacing = min([x_pad(end)-x_pad(end-1) sig]);
-        x_add = [x_pad(end)+spacing:spacing:x_pad(end)+sig];
-        x_pad = [x_pad x_add];
-        g = [g normpdf(x_add, mu, sig)];
-        y_pad = [y_pad y_pad(end)*ones(1, length(x_add))];
-    end
-    
-     subplot(h, w, i)
-     plot(x_pad, y_pad);
-     hold on
-     plot(x_pad, g)
-     title(sum(g))
-    convd(i) = trapz(x_pad, g.*y_pad);
+    g = normpdf(x_int, mu, sig);
+%     subplot(w, h, i)
+%     plot(x_int, y_int)
+%     hold on
+%     plot(x_int, g)
+    convd(i) = trapz(x_int, g.*y_int);
 end
+convd = convd(2:end-1);
 
