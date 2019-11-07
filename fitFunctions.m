@@ -36,7 +36,7 @@ end
 
 % stretched exponential starting at t0, with peak amplitude (a+y0) decaying
 % towards y0 
-% numerically convoluted with a gaussian with std. dev. 
+% numerically convoluted with a gaussian with std. dev. s
 if strcmp(name, 'strc_exp_conv')
     func = @(a, t0, t1, b, y0, s, x) gaussConv(x, heaviside(x-t0).*(a*exp(-((x-t0)/t1).^b)+y0),s)';
 end
