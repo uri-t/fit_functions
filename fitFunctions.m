@@ -2,6 +2,7 @@
 % an anonymous function for that type of fit
 function func = fitFunctions(name)
 
+func = 0;
 % single exponential starting at t0, with peak amplitude a+y0, and decaying
 % the time constant t1 towards y0
 if strcmp(name, 'sing_exp')
@@ -32,6 +33,7 @@ end
 % towards y0.  
 if strcmp(name, 'strc_exp')
     func = @(a, t0, t1, b, y0, x) heaviside(x-t0).*(a*exp(-((x-t0)/t1).^b)+y0);
+    return
 end
 
 % stretched exponential starting at t0, with peak amplitude (a+y0) decaying
@@ -39,5 +41,14 @@ end
 % numerically convoluted with a gaussian with std. dev. s
 if strcmp(name, 'strc_exp_conv')
     func = @(a, t0, t1, b, y0, s, x) gaussConv(x, heaviside(x-t0).*(a*exp(-((x-t0)/t1).^b)+y0),s)';
+    return 
 end
+
+if strcmp(name, 'quad')
+    func = @(k, a, x) k*(x-a).^2;
+    return
+end
+
+error('the name supplied (%s) does not correspond to any function specified in fitFunctions', name)
+    
 
