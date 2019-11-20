@@ -14,7 +14,7 @@ end
 % numerically convoluted with a guassian with standard deviation s using
 % function gaussConv.m
 if strcmp(name, 'sing_exp_conv')
-    func = @(a, t0, t1, s, x) gaussConv(x, heaviside(x-t0).*(a*exp(-(x-t0)/t1)), s)';
+    func = @(a, t0, t1, s, y0, x) gaussConv(x, heaviside(x-t0).*(a*exp(-(x-t0)/t1)+y0), s)';
     return 
 end
 
