@@ -7,6 +7,6 @@ f_test = fitFunctions('sing_exp_conv_test');
 f_num = fitFunctions('sing_exp_conv');
 
 
-plot(x, f_test(1,2,1,1,x))
+plot(x, f_test(2,2,1,1,x))
 hold on
-plot(x, f_num(1,2,1,1,x), 'x')
+plot(x, f_num(2,2,1,1,x), 'x')
