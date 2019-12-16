@@ -14,10 +14,24 @@ end
 % numerically convoluted with a guassian with standard deviation s using
 % function gaussConv.m
 if strcmp(name, 'sing_exp_conv')
-    func = @(a, t0, t1, s, y0, x) gaussConv(x, heaviside(x-t0).*(a*exp(-(x-t0)/t1)+y0), s)';
+    func = @(a, t0, t1, y0, s, x) gaussConv(x, heaviside(x-t0).*(a*exp(-(x-t0)/t1)+y0), s)';
     return 
 end
 
+
+% biexponential injection 
+if strcmp(name, 'biexp_inj')
+    func = @(t0, a1, t1, a2, t2, x) heaviside(x-t0)*(a1*(1-exp(-(x-t0)/t1)) + a2*(1-exp(-(x-t0)/t2)));
+    return
+end
+
+% biexponential injection followed by stretched exponential trapping
+if strcmp(name, 'biexp_inj_strc_trap')
+    func = @(t0, a1, t1, a2, t2, t, b, y0, x) ...
+        heaviside(x-t0).*(a1*(1-exp(-(x-t0)/t1)) + a2*(1-exp(-(x-t0)/t2))).*...
+        ((a1+a2)*exp(-((x-t0)/t).^b)+y0);
+    return
+end
 % single exponential starting at t0, with peak amplitude a+y0, and decaying
 % the time constant t1 towards y0
 % convoluted with a guassian with standard deviation s using closed form
