@@ -57,10 +57,66 @@ if strcmp(name, 'strc_exp_conv')
     return 
 end
 
+%Double exponential
+%1st exponential has an amplitude of a1 and time constant t1
+%2nd exponential has an amplitude of a2 and time constant t2 
+if strcmp(name, 'dbl_exp')
+    func = @(a1, a2, t0, t1, t2, y0, x) heaviside(x-t0).*(a1*exp(-(x-t0)/t1)+a2*exp(-(x-t0)/t2)+y0);
+    return 
+end
+
+%Double exponential convoluted with a Gaussian 
+%1st exponential has an amplitude of a1 and time constant t1
+%2nd exponential has an amplitude of a2 and time constant t2 
+if strcmp(name, 'dbl_exp_conv')
+    func = @(a1, a2, t0, t1, t2, y0, s, x) gaussConv(x, heaviside(x-t0).*(a1*exp(-(x-t0)/t1)+a2*exp(-(x-t0)/t2)+y0), s)';
+    return 
+end
+
+%Single and streched exponential convolued with a Guassian 
+%Single exponential has an amplitude of a1 and time constant t1
+%Stretched exponential has an amplitude of a2, time constant t2, and
+%stretch factor of b
+if strcmp(name, 'sing_exp_strc_exp')
+    func = @(a1, a2, t0, t1, t2, b, y0, x) heaviside(x-t0).*(a1*exp(-(x-t0)/t1)+a2*exp(-((x-t0)/t2).^b)+y0);
+    return 
+end
+
+%Single and streched exponential convolued with a Guassian
+%Single exponential has an amplitude of a1 and time constant t1
+%Stretched exponential has an amplitude of a2, time constant t2, and
+%stretch factor of b
+if strcmp(name, 'sing_exp_strc_exp_conv')
+    func = @(a1, a2, t0, t1, t2, b, y0, s, x) gaussConv(x, heaviside(x-t0).*(a1*exp(-(x-t0)/t1)+a2*exp(-((x-t0)/t2).^b)+y0), s)';
+    return 
+end
+
+%Double streched exponential convolued with a Guassian 
+%First stretched exponential has an amplitude of a1, time constant t1, and
+%stretch factor of b1
+%Second stretched exponential has an amplitude of a2, time constant t2, and
+%stretch factor of b2
+if strcmp(name, 'dbl_strc_exp')
+    func = @(a1, a2, t0, t1, t2, b1, b2, y0, x) heaviside(x-t0).*(a1*exp((-(x-t0)/t1).^b1)+a2*exp(-((x-t0)/t2).^b2)+y0);
+    return 
+end
+
+%Double streched exponential convolued with a Guassian 
+%First stretched exponential has an amplitude of a1, time constant t1, and
+%stretch factor of b1
+%Second stretched exponential has an amplitude of a2, time constant t2, and
+%stretch factor of b2
+if strcmp(name, 'dbl_strc_exp_conv')
+    func = @(a1, a2, t0, t1, t2, b1, b2, y0, s, x) gaussConv(x, heaviside(x-t0).*(a1*exp((-(x-t0)/t1).^b1)+a2*exp(-((x-t0)/t2).^b2)+y0), s)';
+    return 
+end
+
 if strcmp(name, 'quad')
     func = @(k, a, x) k*(x-a).^2;
     return
 end
+
+
 
 error('the name supplied (%s) does not correspond to any function specified in fitFunctions', name)
     
