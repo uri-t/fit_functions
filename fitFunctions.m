@@ -111,11 +111,16 @@ if strcmp(name, 'dbl_strc_exp_conv')
     return 
 end
 
+
+if strcmp(name, 'quad_vec')
+    func = @(coeffs, x) coeffs(1)*x.^2+coeffs(2);
+    return
+end
+
 if strcmp(name, 'quad')
     func = @(k, a, x) k*(x-a).^2;
     return
 end
-
 
 
 error('the name supplied (%s) does not correspond to any function specified in fitFunctions', name)
