@@ -111,6 +111,14 @@ if strcmp(name, 'dbl_strc_exp_conv')
     return 
 end
 
+%Decadic model
+%In fitFunctionWrapper, ti and te must be whole numbers and then A must be
+%a vector with the correct number of ceofficients 
+if strcmp(name, 'decadic')
+    func =  @(A, ti, te, t0, x)  heaviside(x-t0).*(arrayfun(@(g) decadic(ti,te,g,A),x));
+    return
+end
+
 
 if strcmp(name, 'quad_vec')
     func = @(coeffs, x) coeffs(1)*x.^2+coeffs(2);
@@ -122,7 +130,13 @@ if strcmp(name, 'quad')
     return
 end
 
-
+    function [decad] = decadic(a,b,c,coef)
+        dif = a - b;
+        deca = zeros(dif, 1);
+        for i = a:b
+            deca(i-a+1) = coef(i-a+1).*exp(-c/(10^i));
+        end
+        decad = sum(deca);
+    end
 error('the name supplied (%s) does not correspond to any function specified in fitFunctions', name)
-    
-
+end

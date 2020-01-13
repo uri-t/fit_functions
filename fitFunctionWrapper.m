@@ -10,5 +10,5 @@ func = fitFunctions(name);
 
 %% call function
 
-args = [coeffs {x}]
+args = [coeffs {x}];
 y = func(args{:});
