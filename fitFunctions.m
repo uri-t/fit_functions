@@ -125,10 +125,6 @@ if strcmp(name, 'quad_vec')
     return
 end
 
-if strcmp(name, 'quad')
-    func = @(k, a, x) k*(x-a).^2;
-    return
-end
 
     function [decad] = decadic(a,b,c,coef)
         dif = a - b;
